@@ -1,7 +1,7 @@
 Zf2User
 =======
 
-Role, Resource, Privilege;
+User, Authentication;
 
 Installation
 ------------
