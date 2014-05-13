@@ -1,0 +1,166 @@
+<!-- row -->
+<div class="row">
+    <!-- col -->
+    <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5">
+        <h1 class="page-title txt-color-blueDark">
+            <!-- PAGE HEADER -->
+            <i class="fa-fw fa fa-home"></i> 
+                Usuários
+            <span>>  
+                Lista
+            </span>
+        </h1> 
+    </div>
+    <div class="col-xs-3 col-sm-4 col-md-1 col-lg-3 text-right">
+        <a class="btn btn-primary" href="<?php echo $this->url('user-all/default',array('action'=>'register')); ?>"><i class="fa fa-pencil-square-o"></i> Novo</a>
+    </div>
+    <div class="col-xs-9 col-sm-12 col-md-5 col-lg-4">
+        <form class="form-inline text-right" role="form">
+            <div class="form-group">
+                <label class="sr-only" for="filter">Filtrar</label>
+                <input type="text" class="form-control" id="filter" name="filter" placeholder="Filtrar">
+            </div>
+            <button type="submit" class="btn btn-default"><i class="fa fa-filter"></i> Filtrar</button>
+        </form>
+    </div>
+    <!-- end col -->
+</div>
+<!-- end row -->
+<?php if(count($flashMessages)) {
+    foreach ($flashMessages as $msg) { ?>
+        <div class="alert alert-block alert-success">
+            <a class="close" data-dismiss="alert" href="#">×</a>
+            <p>
+                <?php echo $msg; ?>
+            </p>
+        </div>
+    <?php }
+} ?>
+<!-- row -->
+<div class="row">
+    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="widget-body">
+            <?php if (count($this->data) > 0 && !is_null($this->data)) { ?>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="hidden-xs hidden-sm">ID</th>
+                        <th>Login</th>
+                        <?php if ($this->UserIdentity()->getRole()->getDeveloper() == 1) { ?>
+                        <th class="hidden-xs"></i>Papel</th>
+                        <?php } else { ?>
+                        <th class="hidden-sm">Telefone</th>
+                        <th class="hidden-xs"></i>Cidade</th>
+                        <?php } ?>
+                        <th class="text-center">Situação</th>
+                        <th class="text-center">Ação</th>
+                </thead>
+                <tbody>
+                <?php foreach($this->data as $entity): ?>
+                    <tr>
+                        <td class="hidden-xs hidden-sm"><?php echo $entity->getId(); ?></td>
+                        <td><?php echo $entity->getUsername()?></td>
+                        <?php if ($this->UserIdentity()->getRole()->getDeveloper() == 1) { ?>
+                        <td class="hidden-xs">
+                            <?php echo ($entity->getRole()) ? $entity->getRole()->getName() : '-' ; ?>
+                        </td>
+                        <?php } else { ?>
+                        <td class="hidden-sm">
+                            <?php echo ($entity->getPerfil()) ? $entity->getPerfil()->getPhone() : '-' ; ?>
+                        </td>
+                        <td class="hidden-xs">
+                            <?php echo ($entity->getPerfil() && $entity->getPerfil()->getCidade()) ? $entity->getPerfil()->getCidade()->getNome() : '-' ; ?>
+                        </td>
+                        <?php } ?>
+                        <td class="text-center">
+                            <a href="<?php echo $this->url('user-all/default',array('action' => 'ativacao','id' => $entity->getId())) ?>">
+                                <?php echo ($entity->getStatus() == 1) ? '<span class="label label-success">Ativado</span>' : '<span class="label label-danger">Desativado</span>'; ?>
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-info" title="Visualizar" href="#myModal<?=$entity->getId()?>">
+                                <span class="hidden-xs hidden-sm"><i class="fa fa-eye"></i> Visualizar</span>
+                                <span class="hidden-md hidden-lg"><i class="fa fa-eye"></i></span>
+                            </a>
+                            <a class="btn btn-success" title="Editar" href="<?php echo $this->url('usuario-dev/default',
+                                    array('action'=>'cadastro','id'=>$entity->getId())); ?>">
+                                <span class="hidden-xs hidden-sm"><i class="fa fa-pencil-square-o"></i> Editar</span>
+                                <span class="hidden-md hidden-lg"><i class="fa fa-pencil-square-o"></i></span>
+                            </a>
+                            <a class="btn btn-danger" title="Deletar" href="<?php echo $this->url('usuario-dev/default',
+                                    array('action'=>'excluir','id'=>$entity->getId())); ?>">
+                                <span class="hidden-xs hidden-sm"><i class="fa fa-trash-o"></i> Deletar</span>
+                                <span class="hidden-md hidden-lg"><i class="fa fa-trash-o"></i></span>
+                            </a>
+                        </td>
+                    </tr>
+                    <!-- MODAL INFO -->
+                    <div class="modal fade" id="myModal<?=$entity->getId()?>" >
+                        <div class="modal-dialog">
+                            <div class="modal-content panel-default">
+                                <div class="modal-header panel-heading">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="myModalLabel<?=$entity->getId()?>">
+                                        <strong><i class="fa fa-user"></i> Perfil - <?php //echo $entity->getNome(); ?></strong>
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="col-xs-4 text-right">
+                                        <strong>Email:</strong>
+                                    </div>
+                                    <div class="col-xs-8">
+                                        <?php echo $entity->getEmail()?>
+                                    </div>
+                                    <div id="clear"></div>
+                                     <div class="col-xs-4 text-right">
+                                        <strong>Endereço:</strong>
+                                    </div>
+                                    <div class="col-xs-8">
+                                        <?php echo !is_null($entity->getPerfil()) ? $entity->getPerfil()->getEndereco() : '-'; ?>
+                                    </div> 
+                                    <?php if($entity->getPerfil() && $entity->getPerfil()->getCidade()) : ?>
+                                        <div class="col-xs-4 text-right">
+                                            <strong>Cidade:</strong>
+                                        </div>
+                                        <div class="col-xs-8">
+                                            <?php echo $entity->getPerfil()->getCidade()->getNome(); ?>
+                                        </div>
+                                        <div id="clear"></div>
+                                        <div class="col-xs-4 text-right">
+                                            <strong>Estado:</strong>
+                                        </div>
+                                        <div class="col-xs-8">
+                                            <?php echo $entity->getPerfil()->getCidade()->getEstado()->getUf();; ?>
+                                        </div>
+                                    <?php endif; ?>
+                                    <div id="clear"></div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Fechar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- MODAL INFO -->
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+            <div class="text-center">
+                <?php echo $this->paginationControl($this->data,'Sliding','partials/paginator'); ?>
+            </div>
+        </div>
+    </article>
+    <?php } else { ?>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="text-center"><strong>Resultados</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-center">Nenhum resultado encontrado</td>
+                </tr>
+            </tbody>
+        </table>
+    <?php } ?>
+</div>
