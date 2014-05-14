@@ -1,0 +1,134 @@
+<!-- row -->
+<div class="row">
+    <!-- col -->
+    <div class="col-xs-12 col-sm-8 col-md-6 col-lg-6">
+        <h3><i class="fa-fw fa fa-home"></i> <?php echo $this->translate('User') ?>
+            <span>> <?php echo ($this->id) ? $this->translate('Edit') : $this->translate('New') ; ?></span>
+        </h3> 
+    </div>
+    <div class="col-xs-12 col-md-6 col-lg-6 text-right">
+        <button type="reset" class="btn btn-default" onclick="javascript:history.go('-1')">
+            <i class="fa fa-hand-o-left"></i> <?php echo $this->translate('Back') ?>
+        </button>
+    </div><!-- end col -->
+</div><!-- end row -->
+<!-- row -->
+<div class="row">
+    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <?php 
+            $form = $this->form;
+            $form->setAttribute('action',$this->url('user-admin/default',array('action'=>'register','id'=>$this->id)));
+            $form->prepare(); 
+        ?>
+        <?php echo $this->form()->openTag($form); ?>
+        <?php $perfil = $form->get('perfil'); ?>
+        <?php echo $this->formHidden($form->get('id')); ?>
+
+        <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6 <?php echo ($this->formElementErrors($form->get('username'))) ? 'has-error' : '' ; ?>">
+            <?php echo $this->translate($this->formLabel($form->get('username'))); ?>
+            <div class="col-sm-10">
+                <?php echo $this->formInput($form->get('username')); ?>
+            </div>
+            <div class="col-sm-10 col-sm-offset-2">
+                <div class="help-block"><?php echo $this->translate($this->formElementErrors($form->get('username'))); ?></div>
+            </div>
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6 <?php echo ($this->formElementErrors($form->get('email'))) ? 'has-error' : '' ; ?>">
+            <?php echo $this->translate($this->formLabel($form->get('email'))); ?>
+            <div class="col-sm-10">
+                <?php echo $this->formInput($form->get('email')); ?>
+            </div>
+            <div class="col-sm-10 col-sm-offset-2">
+                <div class="help-block"><?php echo $this->translate($this->formElementErrors($form->get('email'))); ?></div>
+            </div>
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6 <?php echo ($this->formElementErrors($form->get('password'))) ? 'has-error' : '' ; ?>">
+            <?php echo $this->translate($this->formLabel($form->get('password'))); ?>
+            <div class="col-sm-10">
+                <?php echo $this->formInput($form->get('password')); ?>
+            </div>
+            <div class="col-sm-10 col-sm-offset-2">
+                <div class="help-block"><?php echo $this->translate($this->formElementErrors($form->get('password'))); ?></div>
+            </div>
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6 <?php echo ($this->formElementErrors($form->get('confirmation'))) ? 'has-error' : '' ; ?>">
+            <?php echo $this->translate($this->formLabel($form->get('confirmation'))); ?>
+            <div class="col-sm-10">
+                <?php echo $this->formInput($form->get('confirmation')); ?>
+            </div>
+            <div class="col-sm-10 col-sm-offset-2">
+                <div class="help-block"><?php echo $this->translate($this->formElementErrors($form->get('confirmation'))); ?></div>
+            </div>
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6 <?php echo ($this->formElementErrors($form->get('password_clue'))) ? 'has-error' : '' ; ?>">
+            <?php echo $this->translate($this->formLabel($form->get('password_clue'))); ?>
+            <div class="col-sm-10">
+                <?php echo $this->formInput($form->get('password_clue')); ?>
+            </div>
+            <div class="col-sm-10 col-sm-offset-2">
+                <div class="help-block"><?php echo $this->translate($this->formElementErrors($form->get('password_clue'))); ?></div>
+            </div>
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6 <?php echo ($this->formElementErrors($form->get('role'))) ? 'has-error' : '' ; ?>">
+            <?php echo $this->formLabel($form->get('role')); ?>
+            <div class="col-sm-10">
+                <?php echo $this->formSelect($form->get('role')); ?>
+            </div>
+            <div class="col-sm-10 col-sm-offset-2">
+                <div class="help-block"><?php echo $this->formElementErrors($form->get('role')); ?></div>
+            </div>
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6 <?php echo ($this->formElementErrors($perfil->get('name'))) ? 'has-error' : '' ; ?>">
+            <?php echo $this->translate($this->formLabel($perfil->get('name'))); ?>
+            <div class="col-sm-10">
+                <?php echo $this->formInput($perfil->get('name')); ?>
+            </div>
+            <div class="col-sm-10 col-sm-offset-2">
+                <div class="help-block"><?php echo $this->translate($this->formElementErrors($perfil->get('name'))); ?></div>
+            </div>
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6 <?php echo ($this->formElementErrors($perfil->get('date_birth'))) ? 'has-error' : '' ; ?>">
+            <?php echo $this->translate($this->formLabel($perfil->get('date_birth'))); ?>
+            <div class="col-sm-10">
+                <?php echo $this->formInput($perfil->get('date_birth')); ?>
+            </div>
+            <div class="col-sm-10 col-sm-offset-2">
+                <div class="help-block"><?php echo $this->translate($this->formElementErrors($perfil->get('date_birth'))); ?></div>
+            </div>
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6 <?php echo ($this->formElementErrors($perfil->get('localization'))) ? 'has-error' : '' ; ?>">
+            <?php echo $this->translate($this->formLabel($perfil->get('localization'))); ?>
+            <div class="col-sm-10">
+                <?php echo $this->formInput($perfil->get('localization')); ?>
+            </div>
+            <div class="col-sm-10 col-sm-offset-2">
+                <div class="help-block"><?php echo $this->translate($this->formElementErrors($perfil->get('localization'))); ?></div>
+            </div>
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6 <?php echo ($this->formElementErrors($perfil->get('obs'))) ? 'has-error' : '' ; ?>">
+            <?php echo $this->translate($this->formLabel($perfil->get('obs'))); ?>
+            <div class="col-sm-10">
+                <?php echo $this->formTextarea($perfil->get('obs')); ?>
+            </div>
+            <div class="col-sm-10 col-sm-offset-2">
+                <div class="help-block"><?php echo $this->translate($this->formElementErrors($perfil->get('obs'))); ?></div>
+            </div>
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6 <?php echo ($this->formElementErrors($form->get('status'))) ? 'has-error' : '' ; ?>">
+            <div class="col-xs-12">
+                <?php echo $this->formCheckbox($form->get('status')); ?>
+                <?php echo $this->translate($this->formLabel($form->get('status'))); ?>
+            </div>
+            <div class="col-sm-10 col-sm-offset-2">
+                <div class="help-block"><?php echo $this->translate($this->formElementErrors($form->get('status'))); ?></div>
+            </div>
+        </div>
+        <div class="col-xs-10 col-sm-offset-2">
+            <?php echo $this->formButton()->openTag($form->get('submit')); ?>
+                <i class="fa fa-check"></i> <?php echo $this->translate($form->get('submit')->getValue()); ?>
+            <?php echo $this->formButton()->closeTag(); ?>
+        </div>
+
+        <?php echo $this->form()->closeTag(); ?>
+    </article>
+</div>

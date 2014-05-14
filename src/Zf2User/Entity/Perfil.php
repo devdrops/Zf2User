@@ -27,23 +27,9 @@ class Perfil
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="cpf_cnpj", type="string", length=255, nullable=true)
-     */
-    private $cpfCnpj;
-
-    /**
-     * @var smallint
-     *
-     * @ORM\Column(name="person", type="smallint", nullable=false)
-     */
-    private $person = 1;
 
     /**
      * @var \Datetime
@@ -55,58 +41,16 @@ class Perfil
     /**
      * @var string
      *
-     * @ORM\Column(name="address", type="string", length=255, nullable=true)
+     * @ORM\Column(name="localization", type="string", length=255, nullable=true)
      */
-    private $address;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="number", type="integer", nullable=true)
-     */
-    private $number;
+    private $localization;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="complement", type="string", length=255, nullable=true)
+     * @ORM\Column(name="avatar", type="string", length=255, nullable=true)
      */
-    private $complement;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="neighborhood", type="string", length=255, nullable=true)
-     */
-    private $neighborhood;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="zip_code", type="string", length=45, nullable=true)
-     */
-    private $zipCode;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="phone", type="string", length=45, nullable=true)
-     */
-    private $phone;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="cellular", type="string", length=45, nullable=true)
-     */
-    private $cellular;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="photo", type="string", length=255, nullable=true)
-     */
-    private $photo;
+    private $avatar;
 
     /**
      * @var string
@@ -116,19 +60,9 @@ class Perfil
     private $obs;
 
     /**
-     * @var \Zf2Base\Entity\Cidade
+     * @var \User\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="Zf2Base\Entity\Cidade")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="cidade_id", referencedColumnName="id", nullable=true)
-     * })
-     */
-    private $cidade;
-
-    /**
-     * @var \Zf2User\Entity\User
-     *
-     * @ORM\OneToOne(targetEntity="Zf2User\Entity\User", inversedBy="perfil")
+     * @ORM\OneToOne(targetEntity="User\Entity\User", inversedBy="perfil")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id",onDelete="CASCADE", nullable=false)
      */
     private $user;
@@ -176,52 +110,6 @@ class Perfil
     }
 
     /**
-     * Set cpfCnpj
-     *
-     * @param string $cpfCnpj
-     * @return Perfil
-     */
-    public function setCpfCnpj($cpfCnpj)
-    {
-        $this->cpfCnpj = $cpfCnpj;
-
-        return $this;
-    }
-
-    /**
-     * Get cpfCnpj
-     *
-     * @return string
-     */
-    public function getCpfCnpj()
-    {
-        return $this->cpfCnpj;
-    }
-
-    /**
-     * Set person
-     *
-     * @param string $person
-     * @return Perfil
-     */
-    public function setPerson($person)
-    {
-        $this->person = $person;
-
-        return $this;
-    }
-
-    /**
-     * Get person
-     *
-     * @return string
-     */
-    public function getPerson()
-    {
-        return $this->person;
-    }
-
-    /**
      * Set dateBirth
      *
      * @param string $dateBirth
@@ -245,187 +133,49 @@ class Perfil
     }
 
     /**
-     * Set address
+     * Set localization
      *
-     * @param string $address
+     * @param string $localization
      * @return Perfil
      */
-    public function setAddress($address)
+    public function setLocalization($localization)
     {
-        $this->address = $address;
+        $this->localization = $localization;
 
         return $this;
     }
 
     /**
-     * Get address
+     * Get localization
      *
      * @return string
      */
-    public function getAddress()
+    public function getLocalization()
     {
-        return $this->address;
+        return $this->localization;
     }
 
     /**
-     * Set number
+     * Set avatar
      *
-     * @param string $number
+     * @param string $avatar
      * @return Perfil
      */
-    public function setNumber($number)
+    public function setAvatar($avatar)
     {
-        $this->number = $number;
+        $this->avatar = $avatar;
 
         return $this;
     }
 
     /**
-     * Get number
+     * Get avatar
      *
      * @return string
      */
-    public function getNumber()
+    public function getAvatar()
     {
-        return $this->number;
-    }
-
-    /**
-     * Set complement
-     *
-     * @param string $complement
-     * @return Perfil
-     */
-    public function setComplement($complement)
-    {
-        $this->complement = $complement;
-
-        return $this;
-    }
-
-    /**
-     * Get complement
-     *
-     * @return string
-     */
-    public function getComplement()
-    {
-        return $this->complement;
-    }
-
-    /**
-     * Set neighborhood
-     *
-     * @param string $neighborhood
-     * @return Perfil
-     */
-    public function setNeighborhood($neighborhood)
-    {
-        $this->neighborhood = $neighborhood;
-
-        return $this;
-    }
-
-    /**
-     * Get neighborhood
-     *
-     * @return string
-     */
-    public function getNeighborhood()
-    {
-        return $this->neighborhood;
-    }
-
-    /**
-     * Set zipCode
-     *
-     * @param string $zipCode
-     * @return Perfil
-     */
-    public function setZipCode($zipCode)
-    {
-        $this->zipCode = $zipCode;
-
-        return $this;
-    }
-
-    /**
-     * Get zipCode
-     *
-     * @return string
-     */
-    public function getZipCode()
-    {
-        return $this->zipCode;
-    }
-
-    /**
-     * Set phone
-     *
-     * @param string $phone
-     * @return Perfil
-     */
-    public function setPhone($phone)
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    /**
-     * Get phone
-     *
-     * @return string
-     */
-    public function getPhone()
-    {
-        return $this->phone;
-    }
-
-    /**
-     * Set cellular
-     *
-     * @param string $cellular
-     * @return Perfil
-     */
-    public function setCellular($cellular)
-    {
-        $this->cellular = $cellular;
-
-        return $this;
-    }
-
-    /**
-     * Get cellular
-     *
-     * @return string
-     */
-    public function getCellular()
-    {
-        return $this->cellular;
-    }
-
-    /**
-     * Set photo
-     *
-     * @param string $photo
-     * @return Perfil
-     */
-    public function setPhoto($photo)
-    {
-        $this->photo = $photo;
-
-        return $this;
-    }
-
-    /**
-     * Get photo
-     *
-     * @return string
-     */
-    public function getPhoto()
-    {
-        return $this->photo;
+        return $this->avatar;
     }
 
     /**
@@ -449,29 +199,6 @@ class Perfil
     public function getObs()
     {
         return $this->obs;
-    }
-
-    /**
-     * Set cidade
-     *
-     * @param \Zf2Base\Entity\Cidade $cidade
-     * @return Perfil
-     */
-    public function setCidade(\Zf2Base\Entity\Cidade $cidade = null)
-    {
-        $this->cidade = $cidade;
-
-        return $this;
-    }
-
-    /**
-     * Get cidade
-     *
-     * @return \Zf2Base\Entity\Cidade
-     */
-    public function getCidade()
-    {
-        return $this->cidade;
     }
 
     /**
@@ -503,6 +230,9 @@ class Perfil
     public function toArray()
     {
         $hydrator = new Hydrator\ClassMethods();
-        return $hydrator->extract($this);
+        $array = $hydrator->extract($this);
+        $array['user'] = $this->getUser()->getId();
+
+        return $array;
     }
 }

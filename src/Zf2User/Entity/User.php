@@ -100,16 +100,6 @@ class User
     private $role;
 
     /**
-     * @var \DftBusiness\Entity\Business
-     *
-     * @ORM\ManyToOne(targetEntity="DftBusiness\Entity\Business")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="businesss_id", referencedColumnName="id", nullable=true)
-     * })
-     */
-    private $business;
-
-    /**
      * @var \Zf2User\Entity\Perfil
      *
      * @ORM\OneToOne(targetEntity="Zf2User\Entity\Perfil", mappedBy="user", cascade={"persist"})
@@ -121,14 +111,14 @@ class User
      */
     public function __construct(array $options = array())
     {
+        $this->salt = base64_encode(Rand::getBytes(8, true));
+        $this->activationKey = md5($this->email.$this->salt);
+
         $hydrator = new Hydrator\ClassMethods();
         $hydrator->hydrate($options, $this);
 
         $this->created = new \DateTime("now");
         $this->lastLogin = new \DateTime("now");
-
-        $this->salt = base64_encode(Rand::getBytes(8, true));
-        $this->activationKey = md5($this->email.$this->salt);
     }
 
     /**
@@ -378,29 +368,6 @@ class User
     }
 
     /**
-     * Set business
-     *
-     * @param \DftBusiness\Entity\Business $business
-     * @return User
-     */
-    public function setBusiness(\DftBusiness\Entity\Business $business = null)
-    {
-        $this->business = $business;
-
-        return $this;
-    }
-
-    /**
-     * Get business
-     *
-     * @return \DftBusiness\Entity\Business
-     */
-    public function getBusiness()
-    {
-        return $this->business;
-    }
-
-    /**
      * Get perfil
      *
      * @return \Zf2User\Entity\Perfil
@@ -429,6 +396,11 @@ class User
     public function toArray()
     {
         $hydrator = new Hydrator\ClassMethods();
-        return $hydrator->extract($this);
+        $array = $hydrator->extract($this);
+        unset($array['password']);
+        $array['role'] = $this->getRole()->getId();
+        $array['perfil'] = $this->getPerfil()->toArray();
+
+        return $array;
     }
 }

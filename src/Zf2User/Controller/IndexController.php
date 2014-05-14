@@ -2,166 +2,66 @@
 
 namespace Zf2User\Controller;
 
-use Zf2Base\Controller\CrudController;
 use Zend\View\Model\ViewModel;
-
-use Zend\Authentication\Storage\Session as SessionStorage;
-
-use Zend\Paginator\Paginator,
-    Zend\Paginator\Adapter\ArrayAdapter;
-
-use DoctrineModule\Validator\NoObjectExists;
+use Zf2Base\Controller\CrudController;
 
 class IndexController extends CrudController
 {
     public function __construct()
     {
         $this->entity = "Zf2User\Entity\User";
-        $this->service = "Zf2User\Service\User";
         $this->form = "Zf2User\Form\User";
-        $this->controller = "Index";
-        $this->route = "user-all/default";
-    }
-
-    public function indexAction()
-    {
-        $usuarioLogado = $this->getEm()->getRepository('Zf2User\Entity\User')->findOneById($this->UserAuthentication()->getIdentity()->getId());
-        if($usuarioLogado->getRole()->getName() == 'Developer')
-        {
-            $list = $this->getEm()
-                         ->getRepository($this->entity)
-                         ->findAll();
-        }else{
-            if(!is_null($usuarioLogado->getEmpresa())){
-                $list = $this->getEm()
-                        ->getRepository($this->entity)->findByEmpresa($usuarioLogado->getEmpresa());
-            }
-        }
-
-        $page = $this->params()->fromRoute('page');
-
-        $paginator = new Paginator(new ArrayAdapter($list));
-        $paginator->setCurrentPageNumber($page)
-                  ->setDefaultItemCountPerPage(20);
-
-        $viewmodel = new ViewModel(array(
-            'data'=>$paginator,
-            'page'=>$page,
-            'flashMessages' => $this->flashMessenger()->getMessages()
-        ));
-
-        $layout = $this->layout();
-        $layout->setTemplate('layout/ajax-layout');
-
-        return $viewmodel;
+        $this->service = "Zf2User\Service\User";
+        $this->controller = "index";
+        $this->route = "user-admin";
     }
 
     public function registerAction()
     {
-        $usuarioLogado = $this->getEm()->getRepository('Zf2User\Entity\User')->findOneById($this->UserAuthentication()->getIdentity()->getId());
-        $request = $this->getRequest();
-
+        // pega o ID
         $id = $this->params()->fromRoute('id',0);
 
-        $form = new $this->form('user', array('id' => $id, 'em' => $this->getEm()));
+        // New formulario
+        $form = new $this->form('register_user', array('id' => $id, 'em' => $this->getEm()));
+        // request posts
+        $request = $this->getRequest();
 
-        if($id){
+        // se ID existir da um setData para popular o formulario
+        if($id) {
+            // com o id efetuar uma busca no banco de dados para popular o form
             $repository = $this->getEm()->getRepository($this->entity);
-            $entity = $repository->findOneById($id);
-            $populate = $entity->toArray();
+            $entity = $repository->find($this->params()->fromRoute('id',0))->toArray();
+            unset($entity['password']);
 
-            if($entity->getPerfil() && $entity->getPerfil()->getCidade()){
-                $populate['user']['perfil'] = $entity->getPerfil()->toArray();
-                $populate['user']['perfil']['estado'] = $entity->getPerfil()->getCidade()->getEstado()->getId();
-                $populate['user']['perfil']['cidade'] = $entity->getPerfil()->getCidade()->getId();
-                $populate['user']['perfil']['cidade_hidden'] = $entity->getPerfil()->getCidade()->getId();
-            }
-
-            /*imagem*/
-            $populate['user']['perfil']['foto_hidden'] = $this->getPathImage().$entity->getPerfil()->getFoto();
-
-            $form->setData($populate);
+            // popula o form
+            $form->setData($entity);
         }
 
+        // verifica se ahh post
         if($request->isPost())
         {
-            if($id) {
-                $post = $request->getPost()->toArray();
-                $post['user']['id'] = $entity->getId();
-                $aux = $request->getFiles()->toArray();
-                $post['user']['perfil']['foto'] = $aux['user']['perfil']['foto'];
-
-                if(empty($post['user']['senha'])){
-                    $form->getInputFilter()->get('user')->get('senha')->setRequired(false);
-                    $form->getInputFilter()->get('user')->get('confirmar')->setRequired(false);
-                }
-
-                $email_validator = new \DoctrineModule\Validator\UniqueObject(
-                        array(
-                            'object_repository' => $this->getRepository('\Zf2User\Entity\User'),
-                            'object_manager' => $this->getEm(),
-                            'fields' => array('email')
-                        ));
-
-                $form->getInputFilter()->get('user')->get('email')
-                        ->getValidatorChain()
-                        ->attach($email_validator);
-            } else {
-                $email_validator = new \DoctrineModule\Validator\NoObjectExists(
-                    array(
-                        'object_repository' => $this->getRepository('\Zf2User\Entity\User'),
-                        'fields' => array('email')
-                    ));
-
-                $form->getInputFilter()->get('user')->get('email')
-                        ->getValidatorChain()
-                        ->attach($email_validator);
-
-                $post = $request->getPost()->toArray();
-                $post['user']['perfil']['cidade_hidden'] = $post['user']['perfil']['cidade'];
-                $aux = $request->getFiles();
-                $post['user']['perfil']['foto'] = $aux['user']['perfil']['foto'];
-            }
-
-            $form->setData($post);
+            // popula o form com os dados do post
+            $form->setData($request->getPost());
+            // valida os mesmos
             if($form->isValid())
             {
-                $post['user_id'] = $this->UserAuthentication()->getIdentity()->getId();
-                $service = $this->getServiceLocator()->get($this->service);
-                if($id) {
-                    $entity_user = $service->persist($post, $entity->getId());
-                } else {
-                    $entity_user = $service->persist($post);
+                try {
+                    $id = $this->params()->fromRoute('id',$request->getPost('id', 0));
+                    $service = $this->getServiceLocator()->get($this->service);
+                    if ($service->persist($request->getPost(), $id))
+                        $this->flashMessenger()->addMessage('Salvo com sucesso!');
+
+                } catch (\Exception $e) {
+                    $this->flashMessenger()->addMessage('Falha ao salvar!');
                 }
 
-                $this->flashMessenger()->addMessage('Salvo com sucesso!');
-
-                if ($usuarioLogado->getPapel()->getNome() == 'Developer') {
-                    return $this->redirect()->toUrl($this->Url()->fromRoute('home-dev').'#'.$this->Url()->fromRoute($this->route,array('controller'=>$this->controller)));
-                } else {
-                    return $this->redirect()->toUrl($this->Url()->fromRoute('home').'#'.$this->Url()->fromRoute($this->route,array('controller'=>$this->controller)));
-                }
+                return $this->redirect()->toRoute($this->route,array('controller'=>$this->controller));
             }
-
         }
 
         return new ViewModel(array(
             'form' => $form,
             'id' => $id
         ));
-    }
-
-    public function activateAction()
-    {
-        $usuarioLogado = $this->getEm()->getRepository('Zf2User\Entity\User')->findOneById($this->UserAuthentication()->getIdentity()->getId());
-
-        $service = $this->getServiceLocator()->get($this->service);
-        $service->ativacao($this->params()->fromRoute('id',null));
-
-        if ($usuarioLogado->getPapel()->getNome() == 'Developer') {
-            return $this->redirect()->toUrl($this->Url()->fromRoute('home-dev').'#'.$this->Url()->fromRoute($this->route,array('controller'=>$this->controller)));
-        } else {
-            return $this->redirect()->toUrl($this->Url()->fromRoute('home').'#'.$this->Url()->fromRoute($this->route,array('controller'=>$this->controller)));
-        }
     }
 }

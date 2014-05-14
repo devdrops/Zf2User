@@ -6,44 +6,39 @@ return array(
     'router' => array(
         'routes' => array(
             'user-auth' => array(
-                'type' => 'Literal',
+              'type' => 'Literal',
                 'options' => array(
-                    'route'=>'/',
+                    'route'=>'/auth',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'Zf2User\Controller',
+                        '__NAMESPACE__' => 'User\Controller',
                         'controller' => 'Auth',
                         'action' => 'index'
                     )
-                )
-            ),
-            'user-logout' => array(
-                'type' => 'Literal',
-                'options' => array(
-                    'route'=>'/auth/logout',
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'Zf2User\Controller',
-                        'controller' => 'Auth',
-                        'action' => 'logout'
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'default' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '[/:action[/:key]]',
+                            'constraints' => array(
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                            ),
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'User\Controller',
+                                'controller' => 'Auth'
+                            )
+                        )
                     )
                 )
             ),
-            'user-activate' => array(
-                'type' => 'Segment',
-                'options' => array(
-                    'route' => '/auth/activate[/:key]',
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'Zf2User\Controller',
-                        'controller' => 'Auth',
-                        'action' => 'activate'
-                    )
-                )
-            ),
-            'user-all' => array(
+            'user-admin' => array(
                 'type' => 'Literal',
                 'options' => array(
                     'route' => '/user',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'Zf2User\Controller',
+                        '__NAMESPACE__' => 'User\Controller',
                         'controller' => 'Index',
                         'action' => 'index'
                     )
@@ -60,7 +55,7 @@ return array(
                                 'id' => '\d+'
                             ),
                             'defaults' => array(
-                                '__NAMESPACE__' => 'Zf2User\Controller',
+                                '__NAMESPACE__' => 'User\Controller',
                                 'controller' => 'Index'
                             )
                         )
@@ -75,7 +70,7 @@ return array(
                                 'page' => '\d+'
                             ),
                             'defaults' => array(
-                                '__NAMESPACE__' => 'Zf2User\Controller',
+                                '__NAMESPACE__' => 'User\Controller',
                                 'controller' => 'Index'
                             )
                         )

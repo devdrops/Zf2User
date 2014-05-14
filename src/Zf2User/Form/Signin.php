@@ -4,12 +4,13 @@ namespace Zf2User\Form;
 
 use Zend\Form\Form;
 
-class Login extends Form
+class Signin extends Form
 {
     public function __construct($name = null, $options = array()) {
-        parent::__construct('Login', $options);
+        parent::__construct($name, $options);
 
         $this->setAttribute('method', 'post')
+             ->setInputFilter(new SigninFilter())
              ->setAttribute('class', 'form-signin');
 
         $this->add(array(
@@ -40,6 +41,14 @@ class Login extends Form
                     'class' => 'control-label col-xs-12 col-sm-2 col-md-2 col-lg-2 no-padding-right'
                 ),
             ),
+        ));
+
+        $this->add(array(
+            'type' => 'Zend\Form\Element\Checkbox',
+            'name' => 'rememberme',
+            'options' => array(
+                'label' => 'Remember me'
+            )
         ));
 
         $this->add(array(

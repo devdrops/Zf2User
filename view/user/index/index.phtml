@@ -1,0 +1,105 @@
+<!-- row -->
+<div class="row">
+    <!-- col -->
+    <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5">
+        <h3><i class="fa-fw fa fa-users"></i> <?php echo $this->translate('Users') ?></h3>
+    </div>
+    <div class="col-xs-3 col-sm-4 col-md-1 col-lg-3 text-right">
+        <a class="btn btn-primary" title="<?php echo $this->translate('New') ?>" href="<?php echo $this->url('user-admin/default', array('action'=>'register')); ?>">
+            <i class="fa fa-pencil-square-o"></i> <?php echo $this->translate('New') ?>
+        </a>
+    </div>
+    <div class="col-xs-9 col-sm-12 col-md-5 col-lg-4">
+        <form class="form-inline text-right" role="form">
+            <div class="input-group">
+                <input type="text" class="form-control">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button"><i class="fa fa-filter"></i> <?php echo $this->translate('Filter') ?>!</button>
+                </span>
+            </div><!-- /input-group -->
+        </form>
+    </div><!-- end col -->
+</div>
+<!-- end row -->
+<?php if(count($flashMessages)) {
+    foreach ($flashMessages as $msg) { ?>
+        <div class="alert alert-block alert-success">
+            <a class="close" data-dismiss="alert" href="#">×</a>
+            <p><?php echo $this->translate($msg) ?></p>
+        </div>
+    <?php }
+} ?>
+<!-- row -->
+<div class="row">
+    <section class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <?php if (count($this->data) > 0 && !is_null($this->data)) { ?>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="hidden-xs hidden-sm">ID</th>
+                        <th class="hidden-xs"><?php echo $this->translate('Username') ?></th>
+                        <th><?php echo $this->translate('Email') ?></th>
+                        <th><?php echo $this->translate('Role') ?></th>
+                        <th class="hidden-xs"><?php echo $this->translate('Name') ?></th>
+                        <th><?php echo $this->translate('Status') ?></th>
+                        <th class="text-center"><?php echo $this->translate('Action') ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($this->data as $entity): ?>
+                    <tr>
+                        <td class="hidden-xs hidden-sm"><?php echo $entity->getId(); ?></td>
+                        <td class="hidden-xs"><?php echo $entity->getUsername(); ?></td>
+                        <td><?php echo $entity->getEmail(); ?></td>
+                        <td><?php echo $entity->getRole()->getName(); ?></td>
+                        <td class="hidden-xs">
+                            <?php echo is_null($entity->getPerfil()->getName()) ? 'NULL' : $entity->getPerfil()->getName(); ?>
+                        </td>
+                        <td class="text-center">
+                            <?php if ($entity->getStatus() == 0) {
+                                echo sprintf($this->translate('%sNo Active%s'), '<span class="label label-warning">', '</span>');
+                            } elseif ($entity->getStatus() == 1) {
+                                echo sprintf($this->translate('%sActive%s'), '<span class="label label-success">', '</span>');
+                            } else {
+                                echo sprintf($this->translate('%sBlock%s'), '<span class="label label-danger">', '</span>') ;
+                            } ?>
+                        <td class="text-center">
+                            <a class="btn btn-xs btn-success" title="<?php echo $this->translate('Edit') ?>" href="<?php echo $this->url('user-admin/default', array('action'=>'register', 'id' => $entity->getId())); ?>">
+                                <span class="hidden-xs hidden-sm">
+                                    <i class="fa fa-pencil-square-o"></i> <?php echo $this->translate('Edit') ?>
+                                </span>
+                                <span class="hidden-md hidden-lg"><i class="fa fa-pencil-square-o"></i></span>
+                            </a>
+                            <a class="btn btn-xs btn-danger" title="<?php echo $this->translate('Delete') ?>" href="<?php echo $this->url('user-admin/default', array('action' => 'delete', 'id' => $entity->getId())); ?>">
+                                <span class="hidden-xs hidden-sm">
+                                    <i class="fa fa-trash-o"></i> <?php echo $this->translate('Delete') ?>
+                                </span>
+                                <span class="hidden-md hidden-lg"><i class="fa fa-trash-o"></i></span>
+                            </a>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <?php if (count($this->data) > 1) { ?>
+                <div class="text-center">
+                    <?php echo $this->paginationControl($this->data,'Sliding','partials/paginator'); ?>
+                </div>
+            <?php } ?>
+        <?php } else { ?>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center"><strong><?php echo $this->translate('Results') ?></strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center"><?php echo $this->translate('Nenhum resultado encontrado') ?></td>
+                    </tr>
+                </tbody>
+            </table>
+        <?php } ?>
+    </section>
+</div>
+<!-- end row -->

@@ -36,12 +36,20 @@ class Adapter implements AdapterInterface
 
     public function authenticate()
     {
-        $repository = $this->em->getRepository("Zf2User\Entity\User");
-        $user = $repository->findByUserAndPassword($this->getUsername(),$this->getPassword());
+        $repository = $this->em->getRepository("User\Entity\User");
+        $user = $repository->findByUsernameAndPassword($this->getUsername(),$this->getPassword());
 
-        if($user)
-            return new Result(Result::SUCCESS, array('user'=>$user),array('OK'));
-        else
-            return new Result(Result::FAILURE_CREDENTIAL_INVALID, null, array());
+        if($user) {
+            if ($user->getStatus() == 1) {
+                return new Result(Result::SUCCESS, array('user'=>$user), array('OK'));
+            } else {
+                if ($user->getStatus() == 0) {
+                    return new Result(Result::FAILURE_CREDENTIAL_INVALID, null, array('Usuário não ativado!'));
+                } else {
+                    return new Result(Result::FAILURE_CREDENTIAL_INVALID, null, array('Usuário bloqueado!'));
+                }
+            }
+        } else
+            return new Result(Result::FAILURE_CREDENTIAL_INVALID, null, array('Usuário ou senha inválida!'));
     }
 }

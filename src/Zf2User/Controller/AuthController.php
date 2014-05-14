@@ -3,23 +3,23 @@
 namespace Zf2User\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController,
-    Zend\View\Model\ViewModel,
-    Zend\Authentication\AuthenticationService,
-    Zend\Authentication\Storage\Session as SessionStorage;
-use Zend\Session\SessionManager;
+    Zend\View\Model\ViewModel;
 
-use Zf2User\Form\Login as LoginForm;
+use Zend\Authentication\AuthenticationService,
+    Zend\Session\SessionManager;
+    //Zend\Authentication\Storage\Session as SessionStorage;
+
+use User\Form\Signin as SigninForm;
 
 class AuthController extends AbstractActionController
 {
     public function indexAction()
     {
-        $form = new LoginForm();
+        $form = new SigninForm();
         $request = $this->getRequest();
 
         if($request->isPost())
         {
-
             $form->setData($request->getPost());
             if($form->isValid())
             {
@@ -30,7 +30,7 @@ class AuthController extends AbstractActionController
                 $auth = new AuthenticationService();
                 //$auth->setStorage($sessionStorage); // Definindo o SessionStorage para a auth
 
-                $authAdapter = $this->getServiceLocator()->get("Zf2User\Auth\Adapter");
+                $authAdapter = $this->getServiceLocator()->get('Zf2User\Auth\Adapter');
                 $authAdapter->setUsername($data['username']);
                 $authAdapter->setPassword($data['password']);
 
@@ -45,12 +45,16 @@ class AuthController extends AbstractActionController
                     if (isset($data['rememberme'])) {
                         $time = 1209600; // 14 days 1209600/3600 = 336 hours => 336/24 = 14 days
                         $sessionManager->rememberMe($time);
+                    } else {
+                        $time = 86400; // 1day
+                        $sessionManager->rememberMe($time);
                     }
 
                     $redirect = $this->UserAuthentication()->getIdentity()->getRole()->getRedirect();
                     return $this->redirect()->toRoute($redirect);
                 } else {
-                    $this->flashMessenger()->addMessage('Usuário ou senha inválidos!');
+                    $messageResult = $result->getMessages();
+                    $this->flashMessenger()->addMessage($messageResult[0]);
                     return $this->redirect()->toRoute('user-auth');
                 }
             }
@@ -71,7 +75,7 @@ class AuthController extends AbstractActionController
         $auth = new AuthenticationService();
         $auth->clearIdentity();
 
-        $sessionManager = new \Zend\Session\SessionManager();
+        $sessionManager = new SessionManager();
         $sessionManager->forgetMe();
 
         return $this->redirect()->toRoute('user-auth');

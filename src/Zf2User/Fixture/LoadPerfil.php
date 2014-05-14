@@ -14,27 +14,26 @@ class LoadPerfil extends AbstractFixture implements OrderedFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        $userDeve = $manager->getReference('Zf2User\Entity\User',1);
-        $userAdmin = $manager->getReference('Zf2User\Entity\User',2);
-
-        $guarapuava = $manager->getReference('Zf2Base\Entity\Cidade',6025);
+        $admin = $manager->getReference('Zf2User\Entity\User',1);
+        $boot1 = $manager->getReference('Zf2User\Entity\User',2);
+        $boot2 = $manager->getReference('Zf2User\Entity\User',3);
 
         $perfil = new Perfil();
-        $perfil->setCidade($guarapuava)
-               ->setUser($userDeve)
+        $perfil->setUser($admin)
                ->setName("Developer")
-               ->setCpfCnpj(NULL)
-               ->setDateBirth("14-05-1992")
-               ->setPerson(1);
+               ->setDateBirth("14-05-1992");
         $manager->persist($perfil);
 
         $perfil = new Perfil();
-        $perfil->setCidade($guarapuava)
-               ->setUser($userAdmin)
-               ->setName("Administrador")
-               ->setCpfCnpj('67.270.866/0001-93')
-               ->setDateBirth("14-05-1992")
-               ->setPerson(2);
+        $perfil->setUser($boot1)
+               ->setName("Boot 1")
+               ->setDateBirth("14-05-1992");
+        $manager->persist($perfil);
+
+        $perfil = new Perfil();
+        $perfil->setUser($boot2)
+               ->setName("Boot 2")
+               ->setDateBirth("14-05-1992");
         $manager->persist($perfil);
 
         $manager->flush();

@@ -14,32 +14,37 @@ class LoadUser extends AbstractFixture implements OrderedFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        $visitante   = $manager->getReference('DftAcl\Entity\Role',1);
-        $cliente     = $manager->getReference('DftAcl\Entity\Role',2);
-        $funcionario = $manager->getReference('DftAcl\Entity\Role',3);
-        $admin       = $manager->getReference('DftAcl\Entity\Role',4);
-        $developer   = $manager->getReference('DftAcl\Entity\Role',5);
+        $visit       = $manager->getReference('Zf2Acl\Entity\Role',1);
+        $client      = $manager->getReference('Zf2Acl\Entity\Role',2);
+        $functionary = $manager->getReference('Zf2Acl\Entity\Role',3);
+        $admin       = $manager->getReference('Zf2Acl\Entity\Role',4);
+        $developer   = $manager->getReference('Zf2Acl\Entity\Role',5);
 
         $user = new User();
-        $user->setEmail("teste@k13.com.br")
-             ->setUsername("developer")
+        $user->setEmail("admin@admin.com.br")
+             ->setUsername("admin")
              ->setPassword(123456)
              ->setPasswordClue('123456')
              ->setStatus(true)
-             ->setRole($developer)
-             ->setBusiness(NULL);
+             ->setRole($admin);
         $manager->persist($user);
 
-        $empresa = $manager->getReference('DftBusiness\Entity\Business',1);
-
         $user = new User();
-        $user->setEmail("admistrador@k13.com.br")
-             ->setUsername("administrador")
+        $user->setEmail("boot1@teste.com.br")
+             ->setUsername("Boot1")
              ->setPassword(123456)
              ->setPasswordClue('123456')
              ->setStatus(true)
-             ->setRole($admin)
-             ->setBusiness($empresa);
+             ->setRole($functionary);
+        $manager->persist($user);
+
+        $user = new User();
+        $user->setEmail("boot2@teste.com.br")
+             ->setUsername("Boot2")
+             ->setPassword(123456)
+             ->setPasswordClue('123456')
+             ->setStatus(true)
+             ->setRole($functionary);
         $manager->persist($user);
 
         $manager->flush();
