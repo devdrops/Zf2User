@@ -36,7 +36,7 @@ class Adapter implements AdapterInterface
 
     public function authenticate()
     {
-        $repository = $this->em->getRepository("User\Entity\User");
+        $repository = $this->em->getRepository("Zf2User\Entity\User");
         $user = $repository->findByUsernameAndPassword($this->getUsername(),$this->getPassword());
 
         if($user) {

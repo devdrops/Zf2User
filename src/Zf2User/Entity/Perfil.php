@@ -60,9 +60,9 @@ class Perfil
     private $obs;
 
     /**
-     * @var \User\Entity\User
+     * @var \Zf2User\Entity\User
      *
-     * @ORM\OneToOne(targetEntity="User\Entity\User", inversedBy="perfil")
+     * @ORM\OneToOne(targetEntity="Zf2User\Entity\User", inversedBy="perfil")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id",onDelete="CASCADE", nullable=false)
      */
     private $user;

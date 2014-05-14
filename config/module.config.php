@@ -36,7 +36,7 @@ return array(
             'user-admin' => array(
                 'type' => 'Literal',
                 'options' => array(
-                    'route' => '/user',
+                    'route' => '/admin/user',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Zf2User\Controller',
                         'controller' => 'Index',

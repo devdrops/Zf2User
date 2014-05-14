@@ -9,7 +9,7 @@ use Zend\Authentication\AuthenticationService,
     Zend\Session\SessionManager;
     //Zend\Authentication\Storage\Session as SessionStorage;
 
-use User\Form\Signin as SigninForm;
+use Zf2User\Form\Signin as SigninForm;
 
 class AuthController extends AbstractActionController
 {
