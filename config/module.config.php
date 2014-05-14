@@ -10,7 +10,7 @@ return array(
                 'options' => array(
                     'route'=>'/auth',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'User\Controller',
+                        '__NAMESPACE__' => 'Zf2User\Controller',
                         'controller' => 'Auth',
                         'action' => 'index'
                     )
@@ -26,7 +26,7 @@ return array(
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
                             ),
                             'defaults' => array(
-                                '__NAMESPACE__' => 'User\Controller',
+                                '__NAMESPACE__' => 'Zf2User\Controller',
                                 'controller' => 'Auth'
                             )
                         )
@@ -38,7 +38,7 @@ return array(
                 'options' => array(
                     'route' => '/user',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'User\Controller',
+                        '__NAMESPACE__' => 'Zf2User\Controller',
                         'controller' => 'Index',
                         'action' => 'index'
                     )
@@ -55,7 +55,7 @@ return array(
                                 'id' => '\d+'
                             ),
                             'defaults' => array(
-                                '__NAMESPACE__' => 'User\Controller',
+                                '__NAMESPACE__' => 'Zf2User\Controller',
                                 'controller' => 'Index'
                             )
                         )
@@ -70,7 +70,7 @@ return array(
                                 'page' => '\d+'
                             ),
                             'defaults' => array(
-                                '__NAMESPACE__' => 'User\Controller',
+                                '__NAMESPACE__' => 'Zf2User\Controller',
                                 'controller' => 'Index'
                             )
                         )
