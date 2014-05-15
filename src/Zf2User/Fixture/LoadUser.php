@@ -21,6 +21,15 @@ class LoadUser extends AbstractFixture implements OrderedFixtureInterface
         $developer   = $manager->getReference('Zf2Acl\Entity\Role',5);
 
         $user = new User();
+        $user->setEmail("jhon@developer.com.br")
+             ->setUsername("developer")
+             ->setPassword(123456)
+             ->setPasswordClue('123456')
+             ->setStatus(true)
+             ->setRole($developer);
+        $manager->persist($user);
+
+        $user = new User();
         $user->setEmail("admin@admin.com.br")
              ->setUsername("admin")
              ->setPassword(123456)
@@ -30,17 +39,8 @@ class LoadUser extends AbstractFixture implements OrderedFixtureInterface
         $manager->persist($user);
 
         $user = new User();
-        $user->setEmail("boot1@teste.com.br")
-             ->setUsername("Boot1")
-             ->setPassword(123456)
-             ->setPasswordClue('123456')
-             ->setStatus(true)
-             ->setRole($functionary);
-        $manager->persist($user);
-
-        $user = new User();
-        $user->setEmail("boot2@teste.com.br")
-             ->setUsername("Boot2")
+        $user->setEmail("boo1@teste.com.br")
+             ->setUsername("functionary")
              ->setPassword(123456)
              ->setPasswordClue('123456')
              ->setStatus(true)

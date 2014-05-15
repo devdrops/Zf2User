@@ -51,7 +51,7 @@ class Module
         if ($auth->hasIdentity()) {
             $arrayUser = $auth->getIdentity();
             $repository = $em->getRepository("Zf2User\Entity\User");
-            $user = $repository->findOneByEmail($arrayUser->getEmail());
+            $user = $repository->findOneById($arrayUser->getId());
             $role = $user->getRole()->getName();
         } elseif (!$auth->hasIdentity()) {
             $role = 'Visit';
@@ -59,14 +59,10 @@ class Module
         //acl
         $acl = $controller->getServiceLocator()->get("Zf2Acl\Permissions\Acl");
         if (!$acl->isAllowed($role,$matchedController,$matchedAction)) {
-            if ($role == 'Visit' && $matchedRoute != 'user-auth') {
-                return $controller->redirect()->toRoute('user-auth');
-            } else {
-                $response = $e->getResponse();
-                //location to page or what ever
-                $response->getHeaders()->addHeaderLine('Location', $e->getRequest()->getBaseUrl() . '/404');
-                $response->setStatusCode(303);
-            }
+            $response = $e->getResponse();
+            //location to page or what ever
+            $response->getHeaders()->addHeaderLine('Location', $e->getRequest()->getBaseUrl() . '/404');
+            $response->setStatusCode(303);
         }
     }
 
