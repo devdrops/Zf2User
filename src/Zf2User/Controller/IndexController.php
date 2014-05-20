@@ -48,15 +48,15 @@ class IndexController extends CrudController
             // valida os mesmos
             if($form->isValid())
             {
-                //try {
+                try {
                     $id = $this->params()->fromRoute('id',$request->getPost('id', 0));
                     $service = $this->getServiceLocator()->get($this->service);
                     if ($service->persist($request->getPost()->toArray(), $id))
                         $this->flashMessenger()->addMessage('Salvo com sucesso!');
 
-                // } catch (\Exception $e) {
-                //     $this->flashMessenger()->addMessage('Falha ao salvar!');
-                // }
+                } catch (\Exception $e) {
+                    $this->flashMessenger()->addMessage('Falha ao salvar!');
+                }
 
                 return $this->redirect()->toRoute($this->route,array('controller'=>$this->controller));
             }
