@@ -50,7 +50,7 @@ class PerfilFieldset extends Fieldset implements InputFilterProviderInterface
             'type' => 'Zend\Form\Element\Text',
             'name' => 'date_birth',
             'attributes' => array(
-                'class' => 'form-control col-xs-12 data_nasc datepicker',
+                'class' => 'form-control col-xs-12',
                 'placeholder' => 'Date Birth',
             ),
             'options' => array(

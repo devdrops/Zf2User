@@ -9,7 +9,7 @@ use Zend\InputFilter\InputFilter;
 
 class UserFilter extends InputFilter
 {
-    public function __construct()
+    public function __construct($options = array())
     {
         $this->add(array(
             'name'=>'username',
@@ -23,34 +23,51 @@ class UserFilter extends InputFilter
             )
         ));
 
-        $this->add(array(
-            'name'=>'password',
-            'required'=>true,
-            'filters' => array(
-                array('name'=>'StripTags'),
-                array('name'=>'StringTrim'),
-            ),
-            'validators' => array(
-                array('name'=>'NotEmpty')
-            )
-        ));
+        if ($options['id']) {
+            $this->add(array(
+                'name'=>'password',
+                'required'=>false,
+            ));
 
-        $this->add(array(
-            'name' => 'confirmation',
-            'required' => true,
-            'filters' => array(
-                array('name'=>'StripTags'),
-                array('name'=>'StringTrim'),
-            ),
-            'validators' => array(
-                array(
-                    'name' => 'Identical',
-                    'options' => array(
-                        'token' => 'password',
-                    ),
+            $this->add(array(
+                'name' => 'confirmation',
+                'required' => false,
+            ));
+        } else {
+            $this->add(array(
+                'name'=>'password',
+                'required'=>true,
+                'filters' => array(
+                    array('name'=>'StripTags'),
+                    array('name'=>'StringTrim'),
                 ),
-            )
-        ));
+                'validators' => array(
+                    array('name'=>'NotEmpty')
+                )
+            ));
+
+            $this->add(array(
+                'name' => 'confirmation',
+                'required' => true,
+                'filters' => array(
+                    array('name'=>'StripTags'),
+                    array('name'=>'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'Identical',
+                        'options' => array(
+                            'token' => 'password',
+                        ),
+                    ),
+                )
+            ));
+
+            $this->add(array(
+                'name' => 'role',
+                'required' => true
+            ));
+        }
 
         $this->add(array(
             'name'=>'email',

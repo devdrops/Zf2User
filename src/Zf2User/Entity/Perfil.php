@@ -234,6 +234,7 @@ class Perfil
     {
         $hydrator = new Hydrator\ClassMethods();
         $array = $hydrator->extract($this);
+        $array['date_birth'] = $this->getDateBirth()->format('d-m-Y');
         $array['user'] = $this->getUser()->getId();
 
         return $array;
