@@ -14,7 +14,8 @@ class User extends Form
     private $em = null;
     private $id = null;
 
-    public function __construct($name = null, $options = array()) {
+    public function __construct($name = null, $options = array())
+    {
         parent::__construct($name, $options);
         $this->em = $options['em'];
         $this->id = $options['id'];
@@ -104,7 +105,7 @@ class User extends Form
             ),
         ));
 
-         $this->add(array(
+        $this->add(array(
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'name' => 'role',
             'attributes' => array(

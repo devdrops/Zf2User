@@ -93,16 +93,6 @@ class PerfilFieldset extends Fieldset implements InputFilterProviderInterface
         ));
 
         $this->add(array(
-            'type' => 'Zend\Form\Element\Hidden',
-            'name' => 'avatar_hidden',
-            'attributes' => array(
-                'id' => 'k13-file-hidden-input',
-                'data-title' => '',
-                'data-image' => ''
-            ),
-        ));
-
-        $this->add(array(
             'name' => 'avatar',
             'type' => 'Zend\Form\Element\File',
             'attributes' => array(
