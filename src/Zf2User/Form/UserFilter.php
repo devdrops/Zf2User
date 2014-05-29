@@ -158,4 +158,8 @@ class UserFilter extends InputFilter
             'required' => true
         ));
     }
+    
+    public function getEm(){
+        return $this->em;
+    }
 }
