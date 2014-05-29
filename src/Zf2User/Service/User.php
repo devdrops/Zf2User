@@ -1,4 +1,7 @@
 <?php
+/**
+* @author Jhon Mike Soares <https://github.com/jhonmike>
+*/
 
 namespace Zf2User\Service;
 
@@ -27,11 +30,10 @@ class User extends AbstractService
         if(empty($data['password']))
             unset($data['password']);
 
-        $data['role'] = $this->em->getReference("Acl\Entity\Role",$data['role']);
-
+        $data['role'] = $this->em->getReference("Zf2Acl\Entity\Role", $data['role']);
         if ($id) {
             $entity = $this->em->getReference($this->entity, $id);
-            $entity_perfil = $this->em->getReference("User\Entity\Perfil",$data['perfil']['id']);
+            $entity_perfil = $this->em->getReference("Zf2User\Entity\Perfil", $data['perfil']['id']);
 
             $hydrator = new Hydrator\ClassMethods();
             $hydrator->hydrate($data, $entity);

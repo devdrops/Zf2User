@@ -1,4 +1,7 @@
 <?php
+/**
+* @author Jhon Mike Soares <https://github.com/jhonmike>
+*/
 
 namespace Zf2User\Entity;
 
@@ -375,19 +378,6 @@ class User
     public function getPerfil()
     {
         return $this->perfil;
-    }
-
-    /**
-     * Set perfil
-     *
-     * @param \Zf2User\Entity\Perfil $perfil
-     * @return User
-     */
-    public function setPerfil(\Zf2User\Entity\Perfil $perfil = null)
-    {
-        $this->perfil = $perfil;
-
-        return $this;
     }
 
     /*

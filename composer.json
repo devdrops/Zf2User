@@ -1,5 +1,5 @@
 {
-    "name": "zf2-app/zf2-user",
+    "name": "2ends/zf2-user",
     "description": "Module User and Authentication",
     "type": "library",
     "keywords": ["user","register","delete","authentication","login","logout","doctrine","zend"],
@@ -15,8 +15,8 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "zf2-app/zf2-base": "dev-master",
-        "zf2-app/zf2-acl": "dev-master",
+        "2ends/zf2-base": "dev-master",
+        "2ends/zf2-acl": "dev-master",
         "hounddog/doctrine-data-fixture-module": "0.0.*"
     },
     "autoload": {

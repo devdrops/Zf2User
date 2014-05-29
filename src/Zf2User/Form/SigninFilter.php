@@ -1,4 +1,7 @@
 <?php
+/**
+* @author Jhon Mike Soares <https://github.com/jhonmike>
+*/
 
 namespace Zf2User\Form;
 
@@ -16,7 +19,15 @@ class SigninFilter extends InputFilter
                 array('name'=>'StringTrim'),
             ),
             'validators' => array(
-                array('name'=>'NotEmpty')
+                array(
+                    'name' => 'NotEmpty',
+                    'options' => array(
+                        'messages' => array(
+                            'notEmptyInvalid' => "Usuário inválido.",
+                            'isEmpty' => "Por favor digite um usuário.",
+                        )
+                    )
+                ),
             )
         ));
 
@@ -28,7 +39,15 @@ class SigninFilter extends InputFilter
                 array('name'=>'StringTrim'),
             ),
             'validators' => array(
-                array('name'=>'NotEmpty')
+                array(
+                    'name' => 'NotEmpty',
+                    'options' => array(
+                        'messages' => array(
+                            'notEmptyInvalid' => "Senha inválido.",
+                            'isEmpty' => "Por favor digite uma senha.",
+                        )
+                    )
+                ),
             )
         ));
 

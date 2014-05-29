@@ -1,4 +1,7 @@
 <?php
+/**
+* @author Jhon Mike Soares <https://github.com/jhonmike>
+*/
 
 namespace Zf2User\Controller;
 
@@ -10,9 +13,12 @@ use Zend\Authentication\AuthenticationService,
     //Zend\Authentication\Storage\Session as SessionStorage;
 
 use Zf2User\Form\Signin as SigninForm;
+use Zf2User\Form\Signup as SignupForm;
 
 class AuthController extends AbstractActionController
 {
+    protected $em;
+
     public function indexAction()
     {
         $form = new SigninForm();
@@ -70,6 +76,41 @@ class AuthController extends AbstractActionController
         }
     }
 
+    public function registerAction()
+    {
+        // New formulario
+        $form = new SignupForm('register_user', array('em' => $this->getEm()));
+        // request posts
+        $request = $this->getRequest();
+
+        // verifica se ahh post
+        if($request->isPost())
+        {
+            // popula o form com os dados do post
+            $form->setData($request->getPost());
+            // valida os mesmos
+            if($form->isValid())
+            {
+                try {
+                    $service = $this->getServiceLocator()->get('Zf2User\Service\User');
+                    $post = $request->getPost()->toArray();
+                    $post['role'] = 2; // Role Client
+                    if ($service->persist($post))
+                        $this->flashMessenger()->addMessage('Olá seja bem vindo ao sistema 1234e5!');
+
+                } catch (\Exception $e) {
+                    $this->flashMessenger()->addMessage('Falha ao se cadastrar, contate o developer@developer.com!');
+                }
+
+                return $this->redirect()->toRoute('user-auth');
+            }
+        }
+
+        return new ViewModel(array(
+            'form' => $form
+        ));
+    }
+
     public function logoutAction()
     {
         $auth = new AuthenticationService();
@@ -92,5 +133,17 @@ class AuthController extends AbstractActionController
             return new ViewModel(array('user'=>$result));
         else
             return new ViewModel();
+    }
+
+    /**
+     *
+     * @return EntityManager
+     */
+    protected function getEm()
+    {
+        if(null === $this->em)
+            $this->em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+
+        return $this->em;
     }
 }

@@ -1,18 +1,21 @@
 <?php
+/**
+* @author Jhon Mike Soares <https://github.com/jhonmike>
+*/
 
 namespace Zf2User\Form;
 
 use Zend\Form\Form;
 use Zf2User\Form\PerfilFieldset,
     Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
-use Zf2User\Entity\User as EntityUser;
 
 class User extends Form
 {
     private $em = null;
     private $id = null;
 
-    public function __construct($name = null, $options = array()) {
+    public function __construct($name = null, $options = array())
+    {
         parent::__construct($name, $options);
         $this->em = $options['em'];
         $this->id = $options['id'];
@@ -20,10 +23,7 @@ class User extends Form
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'form-horizontal');
         $this->setAttribute('role', 'form')
-            ->setInputFilter(new UserFilter());
-
-        $this->setHydrator(new ClassMethodsHydrator(false))
-             ->setObject(new EntityUser);
+            ->setInputFilter(new UserFilter($options));
 
         $this->add(array(
             'type' => 'Zend\Form\Element\Hidden',
@@ -105,7 +105,7 @@ class User extends Form
             ),
         ));
 
-         $this->add(array(
+        $this->add(array(
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'name' => 'role',
             'attributes' => array(

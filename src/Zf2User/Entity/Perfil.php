@@ -1,4 +1,7 @@
 <?php
+/**
+* @author Jhon Mike Soares <https://github.com/jhonmike>
+*/
 
 namespace Zf2User\Entity;
 
@@ -231,6 +234,7 @@ class Perfil
     {
         $hydrator = new Hydrator\ClassMethods();
         $array = $hydrator->extract($this);
+        $array['date_birth'] = $this->getDateBirth()->format('d-m-Y');
         $array['user'] = $this->getUser()->getId();
 
         return $array;

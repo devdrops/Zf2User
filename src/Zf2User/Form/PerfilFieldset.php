@@ -1,4 +1,7 @@
 <?php
+/**
+* @author Jhon Mike Soares <https://github.com/jhonmike>
+*/
 
 namespace Zf2User\Form;
 
@@ -47,7 +50,7 @@ class PerfilFieldset extends Fieldset implements InputFilterProviderInterface
             'type' => 'Zend\Form\Element\Text',
             'name' => 'date_birth',
             'attributes' => array(
-                'class' => 'form-control col-xs-12 data_nasc datepicker',
+                'class' => 'form-control col-xs-12',
                 'placeholder' => 'Date Birth',
             ),
             'options' => array(
@@ -86,16 +89,6 @@ class PerfilFieldset extends Fieldset implements InputFilterProviderInterface
                 'label_attributes' => array(
                     'class' => 'col-sm-2 control-label no-padding-right'
                 ),
-            ),
-        ));
-
-        $this->add(array(
-            'type' => 'Zend\Form\Element\Hidden',
-            'name' => 'avatar_hidden',
-            'attributes' => array(
-                'id' => 'k13-file-hidden-input',
-                'data-title' => '',
-                'data-image' => ''
             ),
         ));
 

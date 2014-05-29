@@ -1,4 +1,7 @@
 <?php
+/**
+* @author Jhon Mike Soares <https://github.com/jhonmike>
+*/
 
 namespace Zf2User\Controller;
 
@@ -48,7 +51,7 @@ class IndexController extends CrudController
                 try {
                     $id = $this->params()->fromRoute('id',$request->getPost('id', 0));
                     $service = $this->getServiceLocator()->get($this->service);
-                    if ($service->persist($request->getPost(), $id))
+                    if ($service->persist($request->getPost()->toArray(), $id))
                         $this->flashMessenger()->addMessage('Salvo com sucesso!');
 
                 } catch (\Exception $e) {
